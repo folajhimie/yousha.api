@@ -47,8 +47,15 @@ app.use("/api/accounts", account);
 app.use("/api/products", productsRoute);
 
 app.get("/", (req, res) => {
+  res.setHeader('Access-Control-Allow-Origin', '*');
+  res.setHeader('Access-Control-Allow-Credentials', 'true');
+  res.setHeader('Access-Control-Max-Age', '1800');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type,Authorization');
+  res.setHeader('Access-Control-Allow-Methods', 'GET,HEAD,PUT,PATCH,POST,DELETE');
+
   res.send("Welcome our to Yousha...");
 });
+
 
 // app.get("/products", (req, res) => {
 //   res.send(products);
