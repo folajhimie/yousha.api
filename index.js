@@ -16,11 +16,24 @@ require("dotenv").config();
 
 app.use(express.json());
 
-const corsOptions = {
-  origin: '*',
-  credentials: true
-}
-app.use(cors(corsOptions));
+const allowedOrigins = ['http://127.0.0.1:4050', 'https://youshacoin.netlify.app', '*'];
+
+app.use(cors({
+  origin: function (origin, callback) {
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
+}));
+
+
+// const corsOptions = {
+//   origin: '*',
+//   credentials: true
+// }
+// app.use(cors(corsOptions));
 // app.use(cors());
 
 app.use("/api/register", register);
