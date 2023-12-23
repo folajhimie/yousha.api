@@ -28,7 +28,7 @@ app.use(cors({
   },
   credentials: true,
   methods: 'GET, HEAD, PUT, PATCH, POST, DELETE',
-  optionsSuccessStatus: 204,
+  optionsSuccessStatus: 200,
   allowedHeaders: 'Content-Type, Authorization', // Add any custom headers you want to allow
 }));
 
@@ -55,7 +55,7 @@ app.get("/", (req, res) => {
 // });
 
 const uri = process.env.DB_URI;
-const port = process.env.APP_URL || 7275;
+const port = process.env.PORT || 7275;
 
 app.listen(port, () => {
   console.log(`Server running on port: ${port}...`);
