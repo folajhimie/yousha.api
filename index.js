@@ -26,6 +26,10 @@ app.use(cors({
       callback(new Error('Not allowed by CORS'));
     }
   },
+  credentials: true,
+  methods: 'GET, HEAD, PUT, PATCH, POST, DELETE',
+  optionsSuccessStatus: 204,
+  allowedHeaders: 'Content-Type, Authorization', // Add any custom headers you want to allow
 }));
 
 
