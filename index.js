@@ -16,29 +16,32 @@ require("dotenv").config();
 
 app.use(express.json());
 
-const allowedOrigins = ['http://127.0.0.1:4050', 'https://youshacoin.netlify.app', '*'];
+// const allowedOrigins = ['http://127.0.0.1:4050', 'https://youshacoin.netlify.app', '*'];
 
-app.use(cors({
-  origin: function (origin, callback) {
-    if (!origin || allowedOrigins.includes(origin)) {
-      callback(null, true);
-    } else {
-      callback(new Error('Not allowed by CORS'));
-    }
-  },
+// app.use(cors({
+//   origin: function (origin, callback) {
+//     if (!origin || allowedOrigins.includes(origin)) {
+//       callback(null, true);
+//     } else {
+//       callback(new Error('Not allowed by CORS'));
+//     }
+//   },
+//   credentials: true,
+//   methods: 'GET, HEAD, PUT, PATCH, POST, DELETE',
+//   optionsSuccessStatus: 200,
+//   allowedHeaders: 'Content-Type, Authorization', // Add any custom headers you want to allow
+// }));
+
+
+const corsOptions = {
+  origin: '*',
   credentials: true,
-  methods: 'GET, HEAD, PUT, PATCH, POST, DELETE',
-  optionsSuccessStatus: 200,
-  allowedHeaders: 'Content-Type, Authorization', // Add any custom headers you want to allow
-}));
+  methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+  optionsSuccessStatus: 204,
+  allowedHeaders: 'Content-Type,Authorization',
+};
 
-
-// const corsOptions = {
-//   origin: '*',
-//   credentials: true
-// }
-// app.use(cors(corsOptions));
-// app.use(cors());
+app.use(cors(corsOptions));
 
 app.use("/api/register", register);
 app.use("/api/login", login);
