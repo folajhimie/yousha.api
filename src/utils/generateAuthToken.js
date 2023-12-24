@@ -9,6 +9,7 @@ const generateAuthToken = (user) => {
       firstName: user.firstName,
       email: user.email,
       isAdmin: user.isAdmin,
+      isVerified: user.isVerified
     },
     jwtSecretKey
   );

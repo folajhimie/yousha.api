@@ -44,6 +44,11 @@ const userSchema = new mongoose.Schema(
       default: false,
     },
     isAdmin: { type: Boolean, default: false },
+    // Reference to the associated account
+    accountId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Account",
+    },
   },
   { timestamps: true }
 );

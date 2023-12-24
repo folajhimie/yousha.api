@@ -4,6 +4,8 @@ const router = express.Router();
 const { Account } = require('../models/account');
 const upload = require('../middleware/multer.js')
 const cloudinary = require('../utils/cloudinary.js')
+const { User } = require("../models/user.js");
+const { auth } = require("../middleware/auth.js");
 
 // const multer = require("multer");
 
@@ -18,7 +20,7 @@ const cloudinary = require('../utils/cloudinary.js')
 // const upload = multer({ storage: storage });
 
 // POST endpoint for creating an account
-router.post('/', upload.fields([
+router.post('/', auth, upload.fields([
         { name: 'frontId', maxCount: 1 },
         { name: 'backId', maxCount: 1 },
         { name: 'selfieId', maxCount: 1 },
@@ -53,10 +55,11 @@ router.post('/', upload.fields([
             const applicantIdPath = req.files['applicantId'][0].path;
 
             // Upload the files to Cloudinary
-            const frontIdResult = await cloudinary.uploader.upload(frontIdPath);
-            const backIdResult = await cloudinary.uploader.upload(backIdPath);
-            const selfieIdResult = await cloudinary.uploader.upload(selfieIdPath);
-            const applicantIdResult = await cloudinary.uploader.upload(applicantIdPath);
+
+            // const frontIdResult = await cloudinary.uploader.upload(frontIdPath);
+            // const backIdResult = await cloudinary.uploader.upload(backIdPath);
+            // const selfieIdResult = await cloudinary.uploader.upload(selfieIdPath);
+            // const applicantIdResult = await cloudinary.uploader.upload(applicantIdPath);
 
             console.log("all the code for the iamges..", frontIdResult, backIdResult, selfieIdResult, applicantIdResult);
 
@@ -67,30 +70,46 @@ router.post('/', upload.fields([
     
             //     return ({public_id: result.public_id, url: result.secure_url})
             // })
+            const userId = req.user?._id;
+
+            console.log("bank in the code...", req.user);
+            console.log("all the way back...", userId , req.user);
 
             // Creating a new account document
-            const newAccount = new Account({
-                accountNumber,
-                address,
-                socialSecurityNumber,
-                dateOfBirth,
-                taxNumber,
-                employerNumber,
-                frontId: frontIdResult,
-                backId: backIdResult,
-                selfieId: selfieIdResult,
-                applicantId: applicantIdResult,
-            });
+            // const newAccount = new Account({
+            //     accountNumber,
+            //     address,
+            //     socialSecurityNumber,
+            //     dateOfBirth,
+            //     taxNumber,
+            //     employerNumber,
+            //     frontId: frontIdResult,
+            //     backId: backIdResult,
+            //     selfieId: selfieIdResult,
+            //     applicantId: applicantIdResult,
+            // });
 
             console.log("all the code..", newAccount);
 
             // Saving the account to the database
-            const savedAccount = await newAccount.save();
+            // const savedAccount = await newAccount.save();
+
+
+
+            
+
+            // Find the associated user and update isAdmin to true
+            // const user = await User.findByIdAndUpdate(
+            //   userId,
+            //   { isAdmin: true, accountId: newAccount._id },
+            //   { new: true }
+            // );
 
             return res.status(200).json({
                 status: true,
                 message: 'Account created successfully',
-                savedAccount
+                savedAccount, 
+                user
             });
         } catch (error) {
             console.error('Error creating account:', error, error.message);

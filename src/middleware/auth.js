@@ -1,6 +1,9 @@
 const jwt = require("jsonwebtoken");
+require("dotenv").config();
 
 const auth = (req, res, next) => {
+  const tokenAuth = req.cookies;
+  console.log("all the code in the header..", req.header, tokenAuth);
   const token = req.header("x-auth-token");
   if (!token)
     return res.status(401).send("Access denied. Not authenticated...");

@@ -5,6 +5,7 @@ const register = require("./src/routes/register");
 const login = require("./src/routes/login");
 const orders = require("./src/routes/orders");
 const account = require("./src/routes/account")
+const cookieParser = require('cookie-parser')
 
 const productsRoute = require("./src/routes/products");
 
@@ -15,6 +16,7 @@ const app = express();
 require("dotenv").config();
 
 app.use(express.json());
+app.use(cookieParser())
 
 const allowedOrigins = ['http://127.0.0.1:4050', 'https://youshacoin.netlify.app', '*'];
 
@@ -54,6 +56,15 @@ app.get("/", (req, res) => {
   // res.setHeader('Access-Control-Allow-Methods', 'GET,HEAD,PUT,PATCH,POST,DELETE');
 
   res.send("Welcome our to Yousha...");
+});
+
+app.get('/api/example', (req, res) => {
+  // Access req.cookies and req.headers here
+  console.log('Cookies:', req.cookies);
+  console.log('Headers:', req.headers);
+
+  // Send a response
+  res.send("Welcome to our bank...").json({ message: 'Success', cookies: req.cookies, headers: req.headers });
 });
 
 
