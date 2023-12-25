@@ -56,10 +56,10 @@ router.post('/', auth, upload.fields([
 
             // Upload the files to Cloudinary
 
-            // const frontIdResult = await cloudinary.uploader.upload(frontIdPath);
-            // const backIdResult = await cloudinary.uploader.upload(backIdPath);
-            // const selfieIdResult = await cloudinary.uploader.upload(selfieIdPath);
-            // const applicantIdResult = await cloudinary.uploader.upload(applicantIdPath);
+            const frontIdResult = await cloudinary.uploader.upload(frontIdPath);
+            const backIdResult = await cloudinary.uploader.upload(backIdPath);
+            const selfieIdResult = await cloudinary.uploader.upload(selfieIdPath);
+            const applicantIdResult = await cloudinary.uploader.upload(applicantIdPath);
 
             console.log("all the code for the iamges..", frontIdResult, backIdResult, selfieIdResult, applicantIdResult);
 
@@ -71,39 +71,43 @@ router.post('/', auth, upload.fields([
             //     return ({public_id: result.public_id, url: result.secure_url})
             // })
             const userId = req.user?._id;
+            const userLogin = await User.findById(userId).exec()
 
-            console.log("bank in the code...", req.user);
-            console.log("all the way back...", userId , req.user);
+            console.log("bank in the code...", req.user, userId );
+            console.log("all the way back...", userLogin , req.user);
+
 
             // Creating a new account document
-            // const newAccount = new Account({
-            //     accountNumber,
-            //     address,
-            //     socialSecurityNumber,
-            //     dateOfBirth,
-            //     taxNumber,
-            //     employerNumber,
-            //     frontId: frontIdResult,
-            //     backId: backIdResult,
-            //     selfieId: selfieIdResult,
-            //     applicantId: applicantIdResult,
-            // });
+            const newAccount = new Account({
+                accountNumber,
+                address,
+                socialSecurityNumber,
+                dateOfBirth,
+                taxNumber,
+                employerNumber,
+                frontId: frontIdResult,
+                backId: backIdResult,
+                selfieId: selfieIdResult,
+                applicantId: applicantIdResult,
+            });
 
             console.log("all the code..", newAccount);
 
             // Saving the account to the database
-            // const savedAccount = await newAccount.save();
+            const savedAccount = await newAccount.save();
 
 
 
             
 
             // Find the associated user and update isAdmin to true
-            // const user = await User.findByIdAndUpdate(
-            //   userId,
-            //   { isAdmin: true, accountId: newAccount._id },
-            //   { new: true }
-            // );
+            const user = await User.findByIdAndUpdate(
+              userId,
+              { isAdmin: true, isVerified: true, accountId: newAccount._id },
+              { new: true }
+            );
+
+            console.log("aLL THE USER...", user , "new account...", savedAccount);
 
             return res.status(200).json({
                 status: true,
