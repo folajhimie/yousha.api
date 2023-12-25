@@ -5,7 +5,7 @@ const auth = (req, res, next) => {
 
   const authHeader = req.headers['authorization'];
 
-  console.log("all the code in the header..", req.header, req.headers, "req in the header..", authHeader);
+  // console.log("all the code in the header..", req.header, req.headers, "req in the header..", authHeader);
 
 
   if (authHeader && authHeader.startsWith('Bearer ')) {
@@ -19,14 +19,13 @@ const auth = (req, res, next) => {
       const decoded = jwt.verify(token, jwtSecretKey);
   
       req.user = decoded;
-      console.log("req in the user...", req.user, " the other token..", req.token);
+      // console.log("req in the user...", req.user, " the other token..", req.token);
       next();
     } catch (ex) {
       res.status(400).send("Invalid auth token...");
     }
   }
 
-  const token = req.header("x-auth-token");
 };
 
 // For User Profile
